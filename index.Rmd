@@ -2,8 +2,6 @@
 <center><img src="https://github.com/DACSS-PreProcessing/session1_main/blob/main/pics/LogoSimple.png?raw=true" width="900"></center>
 
 # Data Collection in R
-## Course: Computational Thinking for Governance Analytics<br> Winter 2017<br>
-
 ### Prof. José Manuel Magallanes, PhD
 
 ```{r klippy, echo=FALSE, include=TRUE}
