@@ -1,0 +1,165 @@
+<br> 
+<center><img src="https://github.com/DACSS-PreProcessing/session1_main/blob/main/pics/LogoSimple.png?raw=true" width="900"></center>
+
+# Data Collection in R
+## Course: Computational Thinking for Governance Analytics<br> Winter 2017<br>
+
+### Prof. José Manuel Magallanes, PhD
+
+```{r klippy, echo=FALSE, include=TRUE}
+# remotes::install_github("rlesur/klippy")
+klippy::klippy(position = c('top', 'right'))
+```
+
+<a id='beginning'></a>
+
+Let me share some code to get data. Let me show you how to deal with the following cases:
+
+1. [Propietary software.](#part1)
+2. [Ad-hoc collection.](#part2)
+3. [Use of APIs.](#part3)
+4. [Scraping webpages.](#part4)
+
+Remember that the location of your files is extremely important. If you have created a folder name "myProject", and your code is saved  in that folder, then "myProject" is your the root folder. In general, you will create other folders inside the root. One of those will be for your data. In any case, you should become familiar with some important commands in R:
+```{r, eval=FALSE}
+# # where is located my current code
+getwd()
+```
+The command above gave you your current location. As you see, you have a _sepator_ ( \, \\, /, //) used to create a path to the folder. This separator may vary depending on what platform (operating system)  you have. To make this simple, you simply write:
+
+```{r, eval=FALSE}
+folder="data"
+fileName="anes_timeseries_2012.sav"
+fileToRead=file.path(folder,fileName)
+fileToRead
+```
+
+The object _fileToRead_ has the right name of the path, because **file.path** creates a path using the **right** _separators_.
+
+____
+
+
+<a id='part1'></a>
+
+## Collecting data from proprietary software
+
+Let's start with data from SPSS and STATA, very common in public policy schools. To work with these kind of files, we will use the package **haven**:
+```{r, eval=FALSE}
+#install.packages("haven")
+library(haven)
+```
+
+Let me open the SPSS file first, these data come from the American National Election Studies survey (ANES):
+```{r, eval=FALSE}
+folder="data"
+fileName="anes_timeseries_2012.sav"
+fileToRead=file.path(folder,fileName)
+dataSpss=read_sav(fileToRead)
+```
+
+So far, we have the data but it is not a data frame, but a tibble, a similar structure created by *haven*. This is a rather big file, so let me select some variables ("libcpre_self","libcpo_self"), a couple of questions pre and post elections asking respondents to place themselves on a seven point scale ranging from ‘extremely liberal’ to ‘extremely conservative’) and create a data frame with them:
+```{r, eval=FALSE}
+varsOfInterest=c("libcpre_self","libcpo_self")
+dataSpssSub=as.data.frame(dataSpss)[varsOfInterest]
+head(dataSpssSub)
+```
+
+A similar process is followed to get a STATA file:
+```{r, eval=FALSE}
+fileName="anes_timeseries_2012.dta"
+fileToRead=file.path(folder,fileName)
+dataStata=read_dta(fileToRead)
+dataStataSub=as.data.frame(dataStata)[varsOfInterest]
+head(dataStataSub)
+```
+
+[Go to page beginning](#beginning)
+
+----
+
+<a id='part2'></a>
+
+## Collecting your ad-hoc data
+
+Let me assume you are answering some questions in this [form](https://forms.gle/6Ga61ifjCjo3j3YF6).
+
+After completing the survey, your answers are saved in an spreadsheet, which you should publish as a CSV file. Then, you can read it like this:
+
+```{r, eval=FALSE}
+
+# obtained from google docs:
+link='https://docs.google.com/spreadsheets/d/1MrWp0kVtNGzTOmhuexjsIaZ9HpSv2X8RZsZ-KuEC4A8/pub?gid=1044145359&single=true&output=csv'
+
+
+# parsing as csv
+myData=read.csv(link)
+
+head(myData)
+
+```
+
+[Go to page beginning](#beginning)
+
+-----
+
+<a id='part3'></a>
+
+## Collecting data from APIs
+
+There are organizations, public and private, that have an open data policy that allows people to access their repositories dynamically. You can get that data in CSV format if available, but the data is always in  XML or JSON format, which are data containers that store data in an *associative array* structure. R could open that data using lists, but we will transform it into a data frame. Let me get the data about [Fire 9-1-1  calls  from Seattle](https://dev.socrata.com/foundry/data.seattle.gov/kzjm-xkqj):
+```{r, eval=FALSE}
+#install.packages("jsonlite")
+library(jsonlite)
+endPoint="https://data.seattle.gov/resource/kzjm-xkqj.json"
+data911 = fromJSON(endPoint)
+head(data911)
+```
+This way you can get only 1000 rows. If you subscribe you can get more (currently around 2 million rows).
+
+[Go to page beginning](#beginning)
+
+-----
+<a id='part4'></a>
+
+## Collecting data by scraping
+
+We are going to get the data from a table from this [wikipage](https://en.wikipedia.org/wiki/List_of_freedom_indices)
+
+```{r, eval=FALSE}
+# Install: XML, RCurl
+# Activate
+library(XML)
+library(RCurl)
+
+# URL
+wiki="https://en.wikipedia.org/wiki/"
+link = "List_of_freedom_indices"
+
+# Data
+wikiLinkContents = getURL(paste0(wiki,link))
+wikiTables = readHTMLTable(wikiLinkContents,header = T,
+                           stringsAsFactors=FALSE)
+```
+Let's see what we have:
+
+```{r, eval=FALSE}
+#data frame:
+is.data.frame(wikiTables)
+#list:
+is.list(wikiTables)
+# how many?
+length(wikiTables)
+```
+When visiting the wikipage, you can see that the indices are in the second table, then:
+```{r, eval=FALSE}
+idx=wikiTables[[2]]
+str(idx)
+```
+Take a look:
+```{r, eval=FALSE}
+head(idx)
+```
+
+### Reminder for Deliverable 1:
+
+Start collecting the data you will use in the course. If you have the files, save them in folder inside your repo. If the files are above 100 Mb, you may try amazonws instead, or use GIT-LFS. For sure, there might be cases where you decide not to commit/push your local data files.
