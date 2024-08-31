@@ -105,6 +105,7 @@ head(myData)
 ## Collecting data from APIs
 
 There are organizations, public and private, that have an open data policy that allows people to access their repositories dynamically. You can get that data in CSV format if available, but the data is always in  XML or JSON format, which are data containers that store data in an *associative array* structure. R could open that data using lists, but we will transform it into a data frame. Let me get the data about [Fire 9-1-1  calls  from Seattle](https://dev.socrata.com/foundry/data.seattle.gov/kzjm-xkqj):
+
 ```{r, eval=FALSE}
 #install.packages("jsonlite")
 library(jsonlite)
