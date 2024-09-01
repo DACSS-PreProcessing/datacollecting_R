@@ -20,10 +20,11 @@ Let me share some code to get data. Let me show you how to deal with the followi
 
 Remember that the location of your files is extremely important. If you have created a folder name "myProject", and your code is saved  in that folder, then "myProject" is your the root folder. In general, you will create other folders inside the root. One of those will be for your data. In any case, you should become familiar with some important commands in R:
 ```{r, eval=FALSE}
-# # where is located my current code
+# # where is  my current code located?
 getwd()
 ```
-The command above gave you your current location. As you see, you have a _sepator_ ( \, \\, /, //) used to create a path to the folder. This separator may vary depending on what platform (operating system)  you have. To make this simple, you simply write:
+
+The command above gave you your current location. As you see, you have a _separator_ ( \, \\, /, //) used to create a path to the folder. This separator may vary depending on what platform (operating system)  you have. To make this simple, you simply write:
 
 ```{r, eval=FALSE}
 folder="data"
@@ -32,7 +33,7 @@ fileToRead=file.path(folder,fileName)
 fileToRead
 ```
 
-The object _fileToRead_ has the right name of the path, because **file.path** creates a path using the **right** _separators_.
+The object _fileToRead_ has the right name of the path, because **file.path** took care of that.
 
 ____
 
@@ -41,7 +42,7 @@ ____
 
 ## Collecting data from proprietary software
 
-Let's start with data from SPSS and STATA, very common in public policy schools. To work with these kind of files, we will use the package **haven**:
+Let's start with data from SPSS and STATA, very common formats. To work with these files, we will use the package **haven**:
 ```{r, eval=FALSE}
 #install.packages("haven")
 library(haven)
@@ -113,6 +114,7 @@ endPoint="https://data.seattle.gov/resource/kzjm-xkqj.json"
 data911 = fromJSON(endPoint)
 head(data911)
 ```
+
 This way you can get only 1000 rows. If you subscribe you can get more (currently around 2 million rows).
 
 [Go to page beginning](#beginning)
@@ -139,6 +141,7 @@ wikiLinkContents = getURL(paste0(wiki,link))
 wikiTables = readHTMLTable(wikiLinkContents,header = T,
                            stringsAsFactors=FALSE)
 ```
+
 Let's see what we have:
 
 ```{r, eval=FALSE}
@@ -149,11 +152,14 @@ is.list(wikiTables)
 # how many?
 length(wikiTables)
 ```
-When visiting the wikipage, you can see that the indices are in the second table, then:
+
+When visiting the wikipage, you can see that we want the second table, then:
+
 ```{r, eval=FALSE}
 idx=wikiTables[[2]]
 str(idx)
 ```
+
 Take a look:
 ```{r, eval=FALSE}
 head(idx)
@@ -161,4 +167,4 @@ head(idx)
 
 ### Reminder for Deliverable 1:
 
-Start collecting the data you will use in the course. If you have the files, save them in folder inside your repo. If the files are above 100 Mb, you may try amazonws instead, or use GIT-LFS. For sure, there might be cases where you decide not to commit/push your local data files.
+Start collecting the data you will use in the course. If you have the files, save them in a folder inside your repo. If the files are around 100 Mb, you may try _amazonws_ instead, or use GIT-LFS. For sure, there might be cases where you decide not to commit/push your local data files.

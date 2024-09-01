@@ -539,10 +539,10 @@ that folder, then “myProject” is your the root folder. In general, you
 will create other folders inside the root. One of those will be for your
 data. In any case, you should become familiar with some important
 commands in R:</p>
-<pre class="r"><code># # where is located my current code
+<pre class="r"><code># # where is  my current code located?
 getwd()</code></pre>
 <p>The command above gave you your current location. As you see, you
-have a <em>sepator</em> ( , \, /, //) used to create a path to the
+have a <em>separator</em> ( , \, /, //) used to create a path to the
 folder. This separator may vary depending on what platform (operating
 system) you have. To make this simple, you simply write:</p>
 <pre class="r"><code>folder=&quot;data&quot;
@@ -550,16 +550,15 @@ fileName=&quot;anes_timeseries_2012.sav&quot;
 fileToRead=file.path(folder,fileName)
 fileToRead</code></pre>
 <p>The object <em>fileToRead</em> has the right name of the path,
-because <strong>file.path</strong> creates a path using the
-<strong>right</strong> <em>separators</em>.</p>
+because <strong>file.path</strong> took care of that.</p>
 <hr />
 <p><a id="part1"></a></p>
 </div>
 <div id="collecting-data-from-proprietary-software" class="section level2">
 <h2>Collecting data from proprietary software</h2>
-<p>Let’s start with data from SPSS and STATA, very common in public
-policy schools. To work with these kind of files, we will use the
-package <strong>haven</strong>:</p>
+<p>Let’s start with data from SPSS and STATA, very common formats. To
+work with these files, we will use the package
+<strong>haven</strong>:</p>
 <pre class="r"><code>#install.packages(&quot;haven&quot;)
 library(haven)</code></pre>
 <p>Let me open the SPSS file first, these data come from the American
@@ -649,8 +648,8 @@ is.data.frame(wikiTables)
 is.list(wikiTables)
 # how many?
 length(wikiTables)</code></pre>
-<p>When visiting the wikipage, you can see that the indices are in the
-second table, then:</p>
+<p>When visiting the wikipage, you can see that we want the second
+table, then:</p>
 <pre class="r"><code>idx=wikiTables[[2]]
 str(idx)</code></pre>
 <p>Take a look:</p>
@@ -658,9 +657,10 @@ str(idx)</code></pre>
 <div id="reminder-for-deliverable-1" class="section level3">
 <h3>Reminder for Deliverable 1:</h3>
 <p>Start collecting the data you will use in the course. If you have the
-files, save them in folder inside your repo. If the files are above 100
-Mb, you may try amazonws instead, or use GIT-LFS. For sure, there might
-be cases where you decide not to commit/push your local data files.</p>
+files, save them in a folder inside your repo. If the files are around
+100 Mb, you may try <em>amazonws</em> instead, or use GIT-LFS. For sure,
+there might be cases where you decide not to commit/push your local data
+files.</p>
 </div>
 </div>
 </div>
